@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import FormInput from '../formInput/FormInput';
+import CustomButton from '../customButton/CustomButton';
+import { signInWithGoogle } from '../../firebase/utils';
+import './signIn.scss';
 
 class SignIn extends Component {
     constructor(props) {
@@ -25,7 +28,7 @@ class SignIn extends Component {
             <div className='signIn'>
                 <h2>I already have an account</h2>
                 <span>Sign in with your email and password</span>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} autoComplete='off'>
                     <FormInput
                         type='email'
                         name='email'
@@ -42,8 +45,10 @@ class SignIn extends Component {
                         handleChange={handleChange}
                         required
                     />
-                    <input type='submit' />
-                    <input type='reset' />
+                    <CustomButton type='submit'>Sign in</CustomButton>
+                    <CustomButton onClick={signInWithGoogle}>
+                        Sign in with Google
+                    </CustomButton>
                 </form>
             </div>
         );
