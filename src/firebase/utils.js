@@ -17,11 +17,26 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+// Using a popup.
 const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+provider.addScope('profile');
+provider.addScope('email');
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-export const signInWithGoogle = () => auth.signInWithPopup();
-
+export const signInWithGoogle = () =>
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(function (result) {
+            // This gives you a Google Access Token.
+            const token = result.credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            console.log('utils', user, token);
+            return {
+                token,
+                user,
+            };
+        });
 export default firebase;
