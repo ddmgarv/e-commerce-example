@@ -1,8 +1,12 @@
 .signIn {
+    width: 380px;
     height: 30vw;
     display: flex;
     flex-direction: column;
-
+    .signIn__container {
+        display: flex;
+        justify-content: space-between;
+    }
     .title {
         margin: 10px 0;
     }
