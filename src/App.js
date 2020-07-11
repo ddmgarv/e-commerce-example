@@ -4,7 +4,7 @@ import HomePage from './pages/homepage/HomePage';
 import ShopPage from './pages/shop/ShopPage';
 import SignInSignUp from './pages/signInSignUp/SignInSignUp';
 import Header from './components/header/Header';
-import { auth } from './firebase/utils';
+import { auth, createUserProfileDocument } from './firebase/utils';
 import './App.css';
 
 class App extends React.Component {
@@ -15,13 +15,11 @@ class App extends React.Component {
         };
     }
 
+    unsubscribeFromAuth = null;
+
     componentDidMount() {
-        this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-            if (user) {
-                this.setState({ currentUser: user });
-            } else {
-                this.setState({ currentUser: null });
-            }
+        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+            createUserProfileDocument(userAuth);
         });
     }
 
