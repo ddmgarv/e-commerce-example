@@ -5,16 +5,11 @@ import ShopPage from './pages/shop/ShopPage';
 import SignInSignUp from './pages/signInSignUp/SignInSignUp';
 import Header from './components/header/Header';
 import { auth, createUserProfileDocument } from './firebase/utils';
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/userActions';
 import './App.css';
 
 class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            currentUser: null,
-        };
-    }
-
     unsubscribeFromAuth = null;
 
     componentDidMount() {
@@ -22,23 +17,13 @@ class App extends React.Component {
             if (userAuth) {
                 const userRef = createUserProfileDocument(userAuth);
                 (await userRef).onSnapshot((snap) => {
-                    this.setState({
-                        currentUser: {
-                            id: snap.id,
-                            ...snap.data(),
-                        },
+                    this.props.setCurrentUserAction({
+                        id: snap.id,
+                        ...snap.data(),
                     });
-                });
-            } else {
-                this.setState({
-                    currentUser: userAuth,
                 });
             }
         });
-    }
-
-    componentDidUpdate() {
-        console.log(this.state);
     }
 
     componentWillUnmount() {
@@ -46,10 +31,9 @@ class App extends React.Component {
     }
 
     render() {
-        const { currentUser } = this.state;
         return (
             <div>
-                <Header currentUser={currentUser} />
+                <Header />
                 <Switch>
                     <Route exact path='/' component={HomePage} />
                     {/* <Route path='/hats' component={HatsPage} /> */}
@@ -61,4 +45,8 @@ class App extends React.Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUserAction: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
