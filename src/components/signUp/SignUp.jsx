@@ -25,10 +25,7 @@ class SignUp extends React.Component {
             return swal('Aviso', 'Las contraseñas no coinciden', 'warning');
         }
         try {
-            const { user } = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
+            const { user } = await auth.createUserWithEmailAndPassword(email, password);
             await createUserProfileDocument(user, {
                 displayName,
             });
@@ -68,6 +65,7 @@ class SignUp extends React.Component {
                         id='displayName'
                         handleChange={this.handleChange}
                         label='Name'
+                        required
                     />
                     <FormInput
                         type='email'
@@ -76,6 +74,7 @@ class SignUp extends React.Component {
                         id='email'
                         handleChange={this.handleChange}
                         label='Email'
+                        required
                     />
                     <FormInput
                         type='password'
@@ -84,6 +83,7 @@ class SignUp extends React.Component {
                         id='password'
                         handleChange={this.handleChange}
                         label='Password'
+                        required
                     />
                     <FormInput
                         type='password'
@@ -92,6 +92,7 @@ class SignUp extends React.Component {
                         id='confirmPassword'
                         handleChange={this.handleChange}
                         label='Confirm password'
+                        required
                     />
                     <CustomButton children='Sign Up' type='submit' />
                 </form>
